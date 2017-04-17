@@ -1,0 +1,20 @@
+﻿<Window x:Name="Noteworthy" x:Class="Noteworthy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Noteworthy" Height="500" Width="500" Loaded="OnLoad">
+    
+    <DockPanel HorizontalAlignment="Left" LastChildFill="True" Margin="0,0,0,0" Width="500" RenderTransformOrigin="0.51,0.667">
+        <Menu DockPanel.Dock="Top">
+                    <MenuItem Header="Take A Note..." Click="takeANoteClick"></MenuItem>
+        </Menu>
+        <StackPanel Name="MainPanel" Height="451" Width="500">
+            <Grid x:Name="myGrid" Height="100">
+                <DataGrid x:Name="myNotes"/>
+            </Grid>
+
+
+        </StackPanel>
+        
+    </DockPanel>
+
+</Window>

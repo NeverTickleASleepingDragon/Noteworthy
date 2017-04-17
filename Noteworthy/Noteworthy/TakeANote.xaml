@@ -1,0 +1,13 @@
+﻿<Window x:Class="Noteworthy.TakeANote"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Take A Note" Height="300" Width="300">
+    <DockPanel x:Name="MainStack" HorizontalAlignment="Left" LastChildFill="False" Margin="0,0,-8,0" Width="300" RenderTransformOrigin="0.51,0.667">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Save As" Click="saveAsClick"></MenuItem>
+            <MenuItem Header="Save" Click="saveClick"></MenuItem>
+        </Menu>
+        <TextBlock x:Name="TitleBlock" DockPanel.Dock="Top" Text="Title" FontSize="22" MouseLeftButtonDown="enterTitle"/>
+        <TextBlock x:Name="NotesBlock"  Text="Notes"/>
+    </DockPanel>
+</Window>
