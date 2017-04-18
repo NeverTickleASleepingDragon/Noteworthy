@@ -32,6 +32,42 @@ namespace Noteworthy
         {
             InitializeComponent();
         }
+        public TakeANote(string t, string p)
+        {
+            InitializeComponent();
+            path = p;
+            title = t;
+
+            if (File.Exists(path))
+            {
+                note = File.ReadAllText(path);
+            }
+
+            clickTitle = new TextBox();
+            clickTitle.FontSize = 22;
+            clickTitle.MinWidth = 50;
+            clickTitle.MinHeight = 30;
+            clickTitle.TextWrapping = TextWrapping.WrapWithOverflow;
+            clickTitle.VerticalAlignment = VerticalAlignment.Top;
+            clickTitle.HorizontalAlignment = HorizontalAlignment.Left;
+            clickTitle.AcceptsReturn = true;
+            DockPanel.SetDock(clickTitle, Dock.Top);
+
+            clickTitle.Text = title;
+
+            clickNote = new TextBox();
+            clickNote.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
+            clickNote.TextWrapping = TextWrapping.Wrap;
+            clickNote.AcceptsReturn = true;
+
+            clickNote.Text = note;
+
+            MainStack.Children.Remove(TitleBlock);
+            MainStack.Children.Remove(NotesBlock);
+            MainStack.Children.Add(clickTitle);
+            MainStack.Children.Add(clickNote);
+            
+        }
         public TakeANote(OleDbConnection c)
         {
             InitializeComponent();
@@ -50,9 +86,9 @@ namespace Noteworthy
             clickTitle.TextWrapping = TextWrapping.WrapWithOverflow;
             clickTitle.VerticalAlignment = VerticalAlignment.Top;
             clickTitle.HorizontalAlignment = HorizontalAlignment.Left;
-            clickTitle.AcceptsReturn=true;
+            clickTitle.AcceptsReturn = true;
             DockPanel.SetDock(clickTitle, Dock.Top);
-            
+
             MainStack.Children.Add(clickTitle);
 
             clickNote = new TextBox();
@@ -68,7 +104,7 @@ namespace Noteworthy
         }
         public void RemoveText(object sender, EventArgs e)
         {
-             clickNote.Text = String.Empty;
+            clickNote.Text = String.Empty;
         }
         private void saveAsClick(object sender, RoutedEventArgs e)
         {
@@ -84,13 +120,16 @@ namespace Noteworthy
             if (result == true)
             {
                 path = save.FileName;
+                System.IO.File.WriteAllText(path, note);
             }
             con.Open();
             noteworthyDataSet = new NoteworthyDataSet();
             NoteworthyDataSetTableAdapters.MyNotesTableAdapter myNotesTldAdp = new NoteworthyDataSetTableAdapters.MyNotesTableAdapter();
+            myNotesTldAdp.Connection.ConnectionString = con.ConnectionString;
             myNotesTldAdp.InsertQuery(title, path);
+
             noteworthyDataSet.AcceptChanges();
-            myNotesTldAdp.Update(noteworthyDataSet);
+            myNotesTldAdp.Update(noteworthyDataSet.MyNotes);
             con.Close();
         }
 
@@ -102,10 +141,15 @@ namespace Noteworthy
                 sr.Write(clickNote.Text);
                 sr.Close();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 saveAsClick(sender, e);
             }
+        }
+
+        private void OnLoad(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }
